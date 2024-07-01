@@ -14,8 +14,8 @@ This project sets up a web service to remove the background from images using th
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/background-removal-service.git
-    cd background-removal-service
+    git clone https://github.com/MuratAkin97/rembg-webservice.git
+    cd rembg-webservice
     ```
 
 2. Install the required Python packages:
