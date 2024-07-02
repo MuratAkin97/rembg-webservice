@@ -23,7 +23,7 @@ def remove_bg(image_url):
 
     return send_file(
         BytesIO(output_bytes),
-        mimetype=f'image/{image_format}',
+        mimetype='image/png',
         as_attachment=False,
         download_name=f'removed-bg.{image_format}'
     )
