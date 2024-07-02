@@ -1,8 +1,7 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, send_file
 from rembg import remove
 from io import BytesIO
 import requests
-import base64
 
 app = Flask(__name__)
 
@@ -17,18 +16,17 @@ def remove_bg(image_url):
     input_bytes = response.content
     output_bytes = remove(input_bytes)
 
-    # Convert the output bytes to a base64 string to display in HTML
-    output_base64 = base64.b64encode(output_bytes).decode('utf-8')
-    img_tag = f'<img src="data:image/png;base64,{output_base64}"/>'
+    # Determine the image format from the input URL
+    image_format = image_url.split('.')[-1].lower()
+    if image_format not in ['png', 'jpeg', 'jpg']:
+        image_format = 'png'  # Default to PNG if the format is unknown
 
-    return render_template_string(f"""
-        <html>
-        <body>
-            <h1>Background Removed Image</h1>
-            {img_tag}
-        </body>
-        </html>
-    """)
+    return send_file(
+        BytesIO(output_bytes),
+        mimetype=f'image/{image_format}',
+        as_attachment=False,
+        download_name=f'removed-bg.{image_format}'
+    )
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080)
